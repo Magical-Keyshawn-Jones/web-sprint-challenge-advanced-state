@@ -1,8 +1,12 @@
 // ❗ You don't need to add extra reducers to achieve MVP
 import { combineReducers } from 'redux'
 
-const initialWheelState = 0
+const initialWheelState = ['B','','','','','',]
 function wheel(state = initialWheelState, action) {
+    switch(state, action){
+      case 0, 'something':
+        return 'Nice'
+    }
   return state
 }
 
