@@ -1,7 +1,14 @@
 // ❗ You don't need to add extra reducers to achieve MVP
-import React from 'react';
 import { combineReducers } from 'redux'
-import { MOVE_CLOCKWISE, MOVE_COUNTERCLOCKWISE } from './action-types'
+import {
+  MOVE_CLOCKWISE, 
+  MOVE_COUNTERCLOCKWISE, 
+  SET_QUIZ_INTO_STATE,
+  LOADING,
+  ERROR,
+  SET_SELECTED_ANSWER,
+  SET_SELECTED_ANSWER2,
+ } from './action-types'
 
 const initialWheelState = ['B','','','','','',]
 function wheel(state = initialWheelState, action) {
@@ -10,9 +17,6 @@ function wheel(state = initialWheelState, action) {
   const newWheel = state
     switch(action.type){
       case MOVE_CLOCKWISE:
-        // bSelector[actionNumber].classList.toggle('active')
-        // bSelector[actionNumber + 1].classList.toggle('active')
-        // return state = ['','B','','','','',]
         switch(newWheel[actionNumber]){
           case newWheel[0]:
             bSelector[actionNumber].classList.toggle('active')
@@ -38,8 +42,9 @@ function wheel(state = initialWheelState, action) {
               bSelector[actionNumber].classList.toggle('active')
               bSelector[0].classList.toggle('active')
               return state = ['B','','','','','',]
+            default: return state
           }
-          break;
+          // break;
       case MOVE_COUNTERCLOCKWISE:
         switch(newWheel[actionNumber]){
           case newWheel[0]:
@@ -66,19 +71,57 @@ function wheel(state = initialWheelState, action) {
               bSelector[actionNumber].classList.toggle('active')
               bSelector[4].classList.toggle('active')
               return state = ['','','','','B','',]
+            default: return state
           }
     }
   return state
 }
 
 const initialQuizState = null
+// store quiz question and answers inside of here
 function quiz(state = initialQuizState, action) {
-  return state
+  switch(action.type){
+    case SET_QUIZ_INTO_STATE:
+      return state = {
+        question: action.payload.question,
+        answer1: action.payload.answers[0].text,
+        answer2: action.payload.answers[1].text,
+      }
+    default: 
+      return state
+    }
 }
 
-const initialSelectedAnswerState = null
+const load = false
+function loadingStateReducer(state = load, action){
+  switch(action.type){
+    case LOADING:
+      return !state
+    default: 
+      return state
+  }
+} 
+
+const loadError = ''
+function errorReducer(state = loadError, action){
+  switch(action.type){
+    case ERROR:
+      return action.payload
+    default:
+      return state
+  }
+}
+
+const initialSelectedAnswerState = false
 function selectedAnswer(state = initialSelectedAnswerState, action) {
-  return state
+  switch(action.type){
+    case SET_SELECTED_ANSWER:
+      return state = [true, false]
+    case SET_SELECTED_ANSWER2:
+      return state = [false, true]
+    default: 
+      return state
+  }
 }
 
 const initialMessageState = ''
@@ -95,50 +138,12 @@ function form(state = initialFormState, action) {
   return state
 }
 
-export default combineReducers({ wheel, quiz, selectedAnswer, infoMessage, form })
-
-// switch(newWheel[action.payload]){
-//   case newWheel[0]:
-//     newWheel[0] = ''
-//     bSelector[0].classList.toggle('B')
-//     newWheel[5] = 'B'
-//     bSelector[5].classList.toggle('B')
-//   break;
-//   case newWheel[1]:
-//     newWheel[1]=''
-//     bSelector[1].classList.toggle('active')
-//     newWheel[0]='B'
-//     bSelector[0].classList.toggle('B')
-//   break;
-//   case newWheel[2]:
-//     newWheel[2]=''
-//     bSelector[2].classList.toggle('active')
-//     newWheel[1]='B'
-//     bSelector[1].classList.toggle('active')
-//   break;
-//   case newWheel[3]:
-//     newWheel[3]=''
-//     bSelector[3].classList.toggle('active')
-//     newWheel[2]='B'
-//     bSelector[2].classList.toggle('active')
-//   break;
-//   case newWheel[4]:
-//     newWheel[4]=''
-//     bSelector[4].classList.toggle('active')
-//     newWheel[3]=''
-//     bSelector[3].classList.toggle('active')
-//   break;
-//   case newWheel[5]:
-//     newWheel[5]=''
-//     bSelector[5].classList.toggle('active')
-//     newWheel[4]=''
-//     bSelector[4].classList.toggle('active')
-// }
-
-// console.log('yup')
-// return state.map((letter, index)=>{
-//   if (letter[index] === letter[actionNumber + 1]){
-//     <div key={index} className="cog active" style={{ "--i": index}}>B</div>
-//   } 
-//   else {<div key={index} className="cog" style={{ "--i": index }}></div> }
-// })
+export default combineReducers({ 
+  wheel, 
+  quiz, 
+  selectedAnswer, 
+  infoMessage, 
+  form, 
+  loadingStateReducer,
+  errorReducer,
+ })
