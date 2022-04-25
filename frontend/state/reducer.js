@@ -8,68 +8,44 @@ import {
   ERROR,
   SET_SELECTED_ANSWER,
   SET_SELECTED_ANSWER2,
+  SET_SELECTED_ANSWER3,
+  SET_INFO_MESSAGE,
  } from './action-types'
 
 const initialWheelState = ['B','','','','','',]
 function wheel(state = initialWheelState, action) {
-  const bSelector = document.getElementsByClassName('cog')
   const actionNumber = action.payload
   const newWheel = state
     switch(action.type){
       case MOVE_CLOCKWISE:
         switch(newWheel[actionNumber]){
           case newWheel[0]:
-            bSelector[actionNumber].classList.toggle('active')
-            bSelector[1].classList.toggle('active')
             return state = ['','B','','','','',]
             case newWheel[1]:
-              bSelector[actionNumber].classList.toggle('active')
-              bSelector[2].classList.toggle('active')
               return state = ['','','B','','','',]
             case newWheel[2]:
-              bSelector[actionNumber].classList.toggle('active')
-              bSelector[3].classList.toggle('active')
               return state = ['','','','B','','',]
             case newWheel[3]:
-              bSelector[actionNumber].classList.toggle('active')
-              bSelector[4].classList.toggle('active')
               return state = ['','','','','B','',]
             case newWheel[4]:
-              bSelector[actionNumber].classList.toggle('active')
-              bSelector[5].classList.toggle('active')
               return state = ['','','','','','B',]
             case newWheel[5]:
-              bSelector[actionNumber].classList.toggle('active')
-              bSelector[0].classList.toggle('active')
               return state = ['B','','','','','',]
             default: return state
           }
-          // break;
       case MOVE_COUNTERCLOCKWISE:
         switch(newWheel[actionNumber]){
           case newWheel[0]:
-            bSelector[actionNumber].classList.toggle('active')
-            bSelector[5].classList.toggle('active')
             return state = ['','','','','','B',]
             case newWheel[1]:
-              bSelector[actionNumber].classList.toggle('active')
-              bSelector[0].classList.toggle('active')
               return state = ['B','','','','','',]
             case newWheel[2]:
-              bSelector[actionNumber].classList.toggle('active')
-              bSelector[1].classList.toggle('active')
               return state = ['','B','','','','',]
             case newWheel[3]:
-              bSelector[actionNumber].classList.toggle('active')
-              bSelector[2].classList.toggle('active')
               return state = ['','','B','','','',]
             case newWheel[4]:
-              bSelector[actionNumber].classList.toggle('active')
-              bSelector[3].classList.toggle('active')
               return state = ['','','','B','','',]
             case newWheel[5]:
-              bSelector[actionNumber].classList.toggle('active')
-              bSelector[4].classList.toggle('active')
               return state = ['','','','','B','',]
             default: return state
           }
@@ -78,14 +54,16 @@ function wheel(state = initialWheelState, action) {
 }
 
 const initialQuizState = null
-// store quiz question and answers inside of here
 function quiz(state = initialQuizState, action) {
   switch(action.type){
     case SET_QUIZ_INTO_STATE:
       return state = {
         question: action.payload.question,
+        quizId: action.payload.quiz_id,
         answer1: action.payload.answers[0].text,
+        answer1Id: action.payload.answers[0].answer_id,
         answer2: action.payload.answers[1].text,
+        answer2Id: action.payload.answers[1].answer_id
       }
     default: 
       return state
@@ -119,6 +97,8 @@ function selectedAnswer(state = initialSelectedAnswerState, action) {
       return state = [true, false]
     case SET_SELECTED_ANSWER2:
       return state = [false, true]
+    case SET_SELECTED_ANSWER3:
+      return state = [false, false]
     default: 
       return state
   }
@@ -126,7 +106,12 @@ function selectedAnswer(state = initialSelectedAnswerState, action) {
 
 const initialMessageState = ''
 function infoMessage(state = initialMessageState, action) {
-  return state
+  switch(action.type){
+    case SET_INFO_MESSAGE:
+      return state = action.payload
+    default: 
+      return state
+  }
 }
 
 const initialFormState = {

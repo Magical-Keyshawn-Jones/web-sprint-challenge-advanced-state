@@ -4,11 +4,17 @@ import * as actionCreators from '../state/action-creators'
 
 function Quiz(props) {
 
-  const { fetchQuiz, loader, errorMessage, testQuiz,selectAnswer2 ,selectAnswer, trueAnswer } = props
-  const buttonClass = document.getElementsByClassName('answer')
+  const {
+    fetchQuiz, 
+    loader, 
+    errorMessage, 
+    testQuiz,selectAnswer2, 
+    selectAnswer, 
+    trueAnswer,
+    postAnswer 
+  } = props
   const active = 'answer selected'
   const inactive = 'answer'
-  let button2Helper = false
 
   useEffect(()=>{
 
@@ -22,9 +28,23 @@ function Quiz(props) {
       } else {return true}
     }
 
+    function onSubmitHandler (e){
+      e.preventDefault()
+      const quiz = testQuiz.quizId
+      const answer1 = testQuiz.answer1Id
+      const answer2 = testQuiz.answer2Id
+      const bestAnswer = (trueAnswer[0] === true ? answer1 : answer2)
+      const postLetter = {
+        quiz_id: quiz,
+        answer_id: bestAnswer
+      }
+      postAnswer(postLetter)
+    }
+
   return (
-    <div id="wrapper">
-       <>
+    <div id="wrapper"> 
+        {loader === false ? (
+          <>
           <h2>{testQuiz === null ? '' : testQuiz.question}</h2>
 
           <div id="quizAnswers">
@@ -43,9 +63,9 @@ function Quiz(props) {
               </div>
           </div>
 
-          <button id="submitAnswerBtn" disabled={disabledHelper(trueAnswer)}>Submit answer</button>
-        </> 
-        {loader === false ? '' : <h1>Loading next quiz...</h1>}
+          <button id="submitAnswerBtn" disabled={disabledHelper(trueAnswer)} onClick={(e)=>{onSubmitHandler(e)}}>Submit answer</button>
+        </>
+        ) : <h1>Loading next quiz...</h1>}
         {errorMessage === '' ? '' : <h1>{errorMessage}</h1>}
     </div>
   )
