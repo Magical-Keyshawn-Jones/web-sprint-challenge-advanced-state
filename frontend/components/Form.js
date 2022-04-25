@@ -11,12 +11,23 @@ export function Form(props) {
         inputChange({id, value})
   }
 
+  function disabledHelper(){
+    const letter = {
+      yup1: formStuff.newFalseAnswer,
+      yup2: formStuff.newQuestion,
+      yup3: formStuff.newTrueAnswer
+    }
+    if (letter.yup1.length && letter.yup2.length && letter.yup3.length > 1 ){
+      return false
+    } else {return true}
+  }
+
   const onSubmit = evt => {
     evt.preventDefault()
     const letter = {
-      false_answer_text: formStuff.newFalseAnswer,
-      question_text: formStuff.newQuestion,
-      true_answer_text: formStuff.newTrueAnswer
+      false_answer_text: formStuff.newFalseAnswer.replace(/\s+/g, ' ').trim(),
+      question_text: formStuff.newQuestion.replace(/\s+/g, ' ').trim(),
+      true_answer_text: formStuff.newTrueAnswer.replace(/\s+/g, ' ').trim()
     }
     postQuiz(letter)
   }
@@ -27,7 +38,7 @@ export function Form(props) {
       <input maxLength={50} onChange={onChange} value={formStuff.newQuestion} id="newQuestion" placeholder="Enter question" />
       <input maxLength={50} onChange={onChange} value={formStuff.newTrueAnswer} id="newTrueAnswer" placeholder="Enter true answer" />
       <input maxLength={50} onChange={onChange} value={formStuff.newFalseAnswer} id="newFalseAnswer" placeholder="Enter false answer" />
-      <button id="submitNewQuizBtn">Submit new quiz</button>
+      <button id="submitNewQuizBtn" disabled={disabledHelper()}>Submit new quiz</button>
     </form>
   )
 }

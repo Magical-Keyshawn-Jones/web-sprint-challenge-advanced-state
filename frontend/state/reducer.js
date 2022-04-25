@@ -124,7 +124,7 @@ const initialFormState = {
 function form(state = initialFormState, action) {
   switch(action.type){
     case INPUT_CHANGE:
-      return state = {...state, [action.payload.id]: action.payload.value}
+      return state = {...state, [action.payload.id]: action.payload.value.replace(/\s+/g, ' ').trim()}
     case RESET_FORM:
       return state = initialFormState
     default: 
