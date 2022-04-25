@@ -4,7 +4,7 @@ import * as actionCreators from '../state/action-creators'
 
 export function Form(props) {
 
-  const { postQuiz, inputChange, formStuff } = props
+  const { postQuiz, inputChange, formStuff, setMessage } = props
 
   const onChange = evt => {
     const { value, id } = evt.target
@@ -13,9 +13,9 @@ export function Form(props) {
 
   function disabledHelper(){
     const letter = {
-      yup1: formStuff.newFalseAnswer,
-      yup2: formStuff.newQuestion,
-      yup3: formStuff.newTrueAnswer
+      yup1: formStuff.newFalseAnswer.replace(/\s+/g, ' ').trim(),
+      yup2: formStuff.newQuestion.replace(/\s+/g, ' ').trim(),
+      yup3: formStuff.newTrueAnswer.replace(/\s+/g, ' ').trim()
     }
     if (letter.yup1.length && letter.yup2.length && letter.yup3.length > 1 ){
       return false
@@ -25,9 +25,9 @@ export function Form(props) {
   const onSubmit = evt => {
     evt.preventDefault()
     const letter = {
-      false_answer_text: formStuff.newFalseAnswer.replace(/\s+/g, ' ').trim(),
-      question_text: formStuff.newQuestion.replace(/\s+/g, ' ').trim(),
-      true_answer_text: formStuff.newTrueAnswer.replace(/\s+/g, ' ').trim()
+      false_answer_text: formStuff.newFalseAnswer,
+      question_text: formStuff.newQuestion,
+      true_answer_text: formStuff.newTrueAnswer
     }
     postQuiz(letter)
   }

@@ -90,6 +90,7 @@ export function postAnswer(letter) {
     axios.post('http://localhost:9000/api/quiz/answer', letter)
     .then(res=>{
       dispatch(setMessage(res.data.message))
+      dispatch(resetForm())
       dispatch(loading())
     })
     .catch(err=>{
@@ -103,6 +104,7 @@ export function postAnswer(letter) {
       dispatch(setQuiz(res.data))
       dispatch(loading())
       dispatch(loadingError(''))
+      dispatch(setMessage(''))
     })
     .catch(err=>{
       console.log('something',{ err })
@@ -118,6 +120,7 @@ export function postQuiz(letter) {
     axios.post('http://localhost:9000/api/quiz/new', letter)
     .then(res=>{
       console.log(res)
+      dispatch(setMessage(`Congrats: "${res.data.question}" is a great question!`))
       dispatch(resetForm())
     })
     .catch(err=>console.log('error!!!!!', err))

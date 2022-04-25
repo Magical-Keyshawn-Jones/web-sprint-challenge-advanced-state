@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux'
 import * as actionCreators from '../state/action-creators'
 
@@ -15,6 +15,7 @@ function Quiz(props) {
   } = props
   const active = 'answer selected'
   const inactive = 'answer'
+  const [quizThing, setQuizThing] = useState(testQuiz)
 
     function disabledHelper(answer){
       if (answer[0] || answer[1] === true) {
@@ -35,9 +36,9 @@ function Quiz(props) {
       postAnswer(postLetter)
     }
 
-    useEffect(()=>{
-      fetchQuiz()
-    },[true])
+    // useEffect(()=>{
+    //   fetchQuiz()
+    // },[])
 
     // window.onload = () => {
     //   fetchQuiz()
