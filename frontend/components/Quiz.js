@@ -16,12 +16,6 @@ function Quiz(props) {
   const active = 'answer selected'
   const inactive = 'answer'
 
-  useEffect(()=>{
-
-    fetchQuiz()
-
-  },[])
-
     function disabledHelper(answer){
       if (answer[0] || answer[1] === true) {
         return false
@@ -41,13 +35,20 @@ function Quiz(props) {
       postAnswer(postLetter)
     }
 
+    useEffect(()=>{
+      fetchQuiz()
+    },[true])
+
+    // window.onload = () => {
+    //   fetchQuiz()
+    // }
   return (
-    <div id="wrapper"> 
+    <div id="wrapper">
         {loader === false ? (
           <>
           <h2>{testQuiz === null ? '' : testQuiz.question}</h2>
 
-          <div id="quizAnswers">
+          <div id="quizAnswers" onLoad={()=>{fetchQuiz()}}>
               <div className={trueAnswer[0] === true ? active : inactive}>
                 {testQuiz === null ? '' : testQuiz.answer1}
                 <button onClick={()=>{selectAnswer()}}>

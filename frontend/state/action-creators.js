@@ -9,6 +9,8 @@ import {
   LOADING,
   ERROR,
   SET_INFO_MESSAGE,
+  INPUT_CHANGE,
+  RESET_FORM,
  } from "./action-types"
 import axios from 'axios';
 
@@ -48,9 +50,13 @@ export function loadingError(message){
   return {type: ERROR, payload: message}
 }
 
-export function inputChange() { }
+export function inputChange(change) {
+  return { type: INPUT_CHANGE, payload: change}
+}
 
-export function resetForm() { }
+export function resetForm() {
+  return {type: RESET_FORM}
+}
 
 // ❗ Async action creators
 export function fetchQuiz() {
@@ -105,10 +111,16 @@ export function postAnswer(letter) {
     })
   }
 }
-export function postQuiz() {
+export function postQuiz(letter) {
   return function (dispatch) {
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
+    axios.post('http://localhost:9000/api/quiz/new', letter)
+    .then(res=>{
+      console.log(res)
+      dispatch(resetForm())
+    })
+    .catch(err=>console.log('error!!!!!', err))
     // - Dispatch the resetting of the form
   }
 }

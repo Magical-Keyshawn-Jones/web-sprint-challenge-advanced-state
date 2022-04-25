@@ -10,6 +10,8 @@ import {
   SET_SELECTED_ANSWER2,
   SET_SELECTED_ANSWER3,
   SET_INFO_MESSAGE,
+  INPUT_CHANGE,
+  RESET_FORM
  } from './action-types'
 
 const initialWheelState = ['B','','','','','',]
@@ -120,7 +122,14 @@ const initialFormState = {
   newFalseAnswer: '',
 }
 function form(state = initialFormState, action) {
-  return state
+  switch(action.type){
+    case INPUT_CHANGE:
+      return state = {...state, [action.payload.id]: action.payload.value}
+    case RESET_FORM:
+      return state = initialFormState
+    default: 
+      return state
+  }  
 }
 
 export default combineReducers({ 
